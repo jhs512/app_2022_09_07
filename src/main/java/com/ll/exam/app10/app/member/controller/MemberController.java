@@ -1,22 +1,41 @@
 package com.ll.exam.app10.app.member.controller;
 
+import com.ll.exam.app10.app.member.entity.Member;
+import com.ll.exam.app10.app.member.service.MemberService;
+import java.io.File;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/member")
+@RequiredArgsConstructor
 public class MemberController {
+
+  private final MemberService memberService;
+
   @GetMapping("/join")
-  public String memberJoin() {
-    return "member/join.html";
+  public String showJoin() {
+    return "member/join";
   }
 
   @PostMapping("/join")
   @ResponseBody
-  public String memberJoinCheck() {
+  public String Join(String username, String email, String password, MultipartFile profileImg) {
+
+    Member oldMember = memberService.fingByUsername(username);
+
+    if (oldMember != null) {
+      return "이미 가입된 회원입니다.";
+    }
+
+    memberService.join(username, "{noop}" + password, email, profileImg);
+
     return "회원가입을 축하합니다";
   }
 }
