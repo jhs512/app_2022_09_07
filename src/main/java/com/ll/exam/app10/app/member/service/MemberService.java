@@ -50,4 +50,8 @@ public class MemberService {
 
         return member;
     }
+
+    public Member findMemberById(Long loginedMemberId) {
+        return memberRepository.findById(loginedMemberId).orElse(null);
+    }
 }

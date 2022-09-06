@@ -1,1 +1,14 @@
 <h1>Pro-File</h1>
+<style>
+  .pro-file{
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+</style>
+
+<img class="pro-file" th:src="@{|/gen/${loginedMember.profileImg}|}"></img>
+<h3>아이디 : [[${loginedMember.username}]]</h3>
+<h3>이메일 : [[${loginedMember.email}]]</h3>
+
