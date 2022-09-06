@@ -3,6 +3,7 @@ package com.ll.exam.app10.app.member.controller;
 import com.ll.exam.app10.app.member.entity.Member;
 import com.ll.exam.app10.app.member.service.MemberService;
 import java.io.File;
+import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,17 +26,31 @@ public class MemberController {
   }
 
   @PostMapping("/join")
-  @ResponseBody
-  public String Join(String username, String email, String password, MultipartFile profileImg) {
+  public String Join(String username, String email, String password, MultipartFile profileImg, HttpSession session) {
 
     Member oldMember = memberService.fingByUsername(username);
 
     if (oldMember != null) {
-      return "이미 가입된 회원입니다.";
+      return "redirect:/?errorMsg=Already Joined!";
     }
 
-    memberService.join(username, "{noop}" + password, email, profileImg);
+    Member member = memberService.join(username, "{noop}" + password, email, profileImg);
 
-    return "회원가입을 축하합니다";
+    session.setAttribute("loginedMemberId", member.getId());
+
+    return "redirect:/member/profile";
+  }
+
+  @GetMapping("/profile")
+  public String showProFile(HttpSession session) {
+    Long loginedMemberId = (Long) session.getAttribute("loginedMemberId");
+
+    boolean isLogined = loginedMemberId != null;
+
+    if (isLogined == false) {
+      return "redirect:/?errorMsg=Please Join";
+    }
+
+    return "member/profile";
   }
 }
