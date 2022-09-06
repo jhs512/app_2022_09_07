@@ -2,6 +2,7 @@ package com.ll.exam.app10.app.fileupload.entity.controller;
 
 import java.io.File;
 import java.io.IOException;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,14 +18,26 @@ public class FileUploadController {
 
   @RequestMapping("")
   @ResponseBody
-  public String upload(@RequestParam("img1") MultipartFile img1, @RequestParam("img2") MultipartFile img2) {
+  public String upload(@RequestParam("img") MultipartFile img) {
     try {
-      img1.transferTo(new File(genFileDirPath + "/1.png"));
-      img2.transferTo(new File(genFileDirPath + "/2.png"));
+      img.transferTo(new File(genFileDirPath + "/1.png"));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
 
     return "업로드 완료!";
   }
+
+//  // 세션 아이디를 이용한 저장 방식
+//  @RequestMapping("")
+//  @ResponseBody
+//  public String upload(@RequestParam("img") MultipartFile img, HttpSession httpSession) {
+//    try {
+//      img.transferTo(new File(genFileDirPath +"/" + httpSession.getId() + ".png"));
+//    } catch (IOException e) {
+//      throw new RuntimeException(e);
+//    }
+//
+//    return "업로드 완료!";
+//  }
 }
