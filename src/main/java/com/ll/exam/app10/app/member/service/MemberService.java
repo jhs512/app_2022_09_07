@@ -1,5 +1,6 @@
 package com.ll.exam.app10.app.member.service;
 
+import com.ll.exam.app10.app.auth.PrincipalDetails;
 import com.ll.exam.app10.app.member.entity.Member;
 import com.ll.exam.app10.app.member.repository.MemberRepository;
 import java.io.File;
@@ -7,12 +8,15 @@ import java.io.IOException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberService implements UserDetailsService {
     @Value("${custom.genFileDirPath}")
     private String genFileDirPath;
 
@@ -53,5 +57,19 @@ public class MemberService {
 
     public Member findMemberById(Long loginedMemberId) {
         return memberRepository.findById(loginedMemberId).orElse(null);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Member byUsername = memberRepository.findByUsername(username).orElse(null);
+
+        if (byUsername != null) {
+            return new PrincipalDetails(byUsername);
+        }
+        return null;
+    }
+
+    public Member findMemberByUsername(String username) {
+        return memberRepository.findByUsername(username).orElse(null);
     }
 }

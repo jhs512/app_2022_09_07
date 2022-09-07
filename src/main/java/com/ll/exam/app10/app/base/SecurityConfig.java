@@ -14,8 +14,16 @@ public class SecurityConfig {
     http
         .csrf().disable()
         .authorizeRequests()
-        .antMatchers("/**")
-        .permitAll();
+        .antMatchers("/member/profile")
+        .permitAll()
+        .and()
+        .formLogin()
+        .loginPage("/member/login")
+        .usernameParameter("username")
+        .passwordParameter("password")
+        .defaultSuccessUrl("/member/login")
+        .failureUrl("/member/login");
+
     return http.build();
   }
 }

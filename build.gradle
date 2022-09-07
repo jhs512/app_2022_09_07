@@ -47,6 +47,9 @@ dependencies {
 
 	// 타임 리프 웹 시큐리티
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	// 스프링 부트 시큐리티
+	compile "org.springframework.boot:spring-boot-starter-security"
+
 	// 쿼리문 단순하게
 	implementation "com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0"
 }

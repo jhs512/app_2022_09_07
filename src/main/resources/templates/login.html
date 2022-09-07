@@ -1,0 +1,43 @@
+<!--<form th:action="@{/member/profile}" method="POST">-->
+<!--  <div>-->
+<!--    <span>아이디</span>-->
+<!--    <input type="text" name="username">-->
+<!--  </div>-->
+<!--  <div>-->
+<!--    <span>비밀번호</span>-->
+<!--    <input type="password" name="password">-->
+<!--  </div>-->
+<!--  <div>-->
+<!--    <span>로그인</span>-->
+<!--    <input type="submit" value="로그인">-->
+<!--  </div>-->
+<!--</form>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 페이지</title>
+</head>
+<body>
+<h1>로그인 페이지</h1>
+<hr/>
+
+<h2>로그인 유저 : </h2>
+<p sec:authentication="principal"></p>
+
+<div sec:authorize="isAnonymous()" style="background-color:pink; padding:1em;">
+  <form th:action="@{/member/profile}" method="post" >
+    <input type="text" name="username" />
+    <input type="password" name="password" />
+    <button>로그인</button>
+  </form>
+  <br>
+  <a href="/joinForm">회원가입하기</a><br>
+</div>
+
+<div sec:authorize="isAuthenticated()" style="background-color:pink; padding:1em;">
+  <a href="/logout">로그아웃</a>
+</div>
+</body>
+</html>
