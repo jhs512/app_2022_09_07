@@ -27,7 +27,7 @@
 <p sec:authentication="principal"></p>
 
 <div sec:authorize="isAnonymous()" style="background-color:pink; padding:1em;">
-  <form th:action="@{/member/profile}" method="post" >
+  <form th:action method="POST" >
     <input type="text" name="username" />
     <input type="password" name="password" />
     <button>로그인</button>

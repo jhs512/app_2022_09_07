@@ -3,16 +3,16 @@ package com.ll.exam.app10.app.member.service;
 import com.ll.exam.app10.app.auth.PrincipalDetails;
 import com.ll.exam.app10.app.member.entity.Member;
 import com.ll.exam.app10.app.member.repository.MemberRepository;
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -45,10 +45,10 @@ public class MemberService implements UserDetailsService {
         // 방법 (2)
         Member member = Member.builder()
                 .username(username)
-                    .password(password)
-                        .email(email)
-                            .profileImg(profileImgRelPath)
-                                .build();
+                .password(password)
+                .email(email)
+                .profileImg(profileImgRelPath)
+                .build();
 
         memberRepository.save(member);
 
@@ -60,7 +60,7 @@ public class MemberService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public PrincipalDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member byUsername = memberRepository.findByUsername(username).orElse(null);
 
         if (byUsername != null) {

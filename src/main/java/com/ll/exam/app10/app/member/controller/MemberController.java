@@ -6,9 +6,7 @@ import com.ll.exam.app10.app.member.service.MemberService;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class MemberController {
   private final MemberService memberService;
-  private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final PasswordEncoder passwordEncoder;
 
   // 회원가입 창
   @GetMapping("/join")
@@ -37,7 +35,7 @@ public class MemberController {
 
   // 회원가입 진행
   @PostMapping("/join")
-  public String Join(String username, String email, String password, MultipartFile profileImg, HttpSession session) {
+  public String Join(String username, String email, String password, MultipartFile profileImg) {
 
     Member oldMember = memberService.fingByUsername(username);
 
@@ -45,11 +43,9 @@ public class MemberController {
       return "redirect:/?errorMsg=Already Joined!";
     }
 
-    String encodedPwd = bCryptPasswordEncoder.encode(password);
+    String encodedPwd = passwordEncoder.encode(password);
 
     Member member = memberService.join(username, encodedPwd, email, profileImg);
-
-    session.setAttribute("loginedMemberId", member.getId());
 
     return "redirect:/";
   }
